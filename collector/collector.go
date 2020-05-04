@@ -1,6 +1,8 @@
 package collector
 
 import (
+	"fmt"
+	"os"
 	"runtime"
 	"time"
 )
@@ -195,13 +197,19 @@ type Fields struct {
 	Goarch  string `json:"-"`
 	Goos    string `json:"-"`
 	Version string `json:"-"`
+	Pid     string `json:"-"`
 }
 
 func (f *Fields) Tags() map[string]string {
+	hostname, err := os.Hostname()
+	if err != nil {
+		hostname = "unknown"
+	}
 	return map[string]string{
 		"go.os":      f.Goos,
 		"go.arch":    f.Goarch,
 		"go.version": f.Version,
+		"pid":        fmt.Sprintf("%s-%d", hostname, os.Getpid()),
 	}
 }
 
