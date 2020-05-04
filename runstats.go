@@ -130,13 +130,6 @@ func RunCollector(config *Config) (err error) {
 		return errors.Wrap(err, "failed to ping influxdb client")
 	}
 
-	// Auto create database
-	_, err = queryDB(clnt, fmt.Sprintf("CREATE DATABASE IF NOT EXISTS \"%s\"", config.Database))
-
-	if err != nil {
-		config.Logger.Fatalln(err)
-	}
-
 	_runStats := &runStats{
 		logger: config.Logger,
 		client: clnt,
